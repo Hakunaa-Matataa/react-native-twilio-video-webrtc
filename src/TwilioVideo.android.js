@@ -79,7 +79,8 @@ const nativeEvents = {
   disconnect: 2,
   switchCamera: 3,
   toggleVideo: 4,
-  toggleSound: 5
+  toggleSound: 5,
+  setEnterCommunication: 6
 }
 
 class CustomTwilioVideoView extends Component {
@@ -115,6 +116,10 @@ class CustomTwilioVideoView extends Component {
       default:
         break
     }
+  }
+
+  setEnterCommunication(isEnter){
+    this.runCommand(nativeEvents.setEnterCommunication, [isEnter])
   }
 
   buildNativeEventWrappers () {

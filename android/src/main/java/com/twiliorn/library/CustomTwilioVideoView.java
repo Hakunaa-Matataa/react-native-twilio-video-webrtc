@@ -116,6 +116,7 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
     private boolean         disconnectedFromOnDestroy;
     private IntentFilter intentFilter;
     private BecomingNoisyReceiver myNoisyAudioStreamReceiver;
+    private boolean         isInCommunicationMode = false;
 
     public CustomTwilioVideoView(ThemedReactContext context) {
         super(context);
@@ -300,7 +301,7 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
              * possible VoIP performance. Some devices have difficulties with
              * speaker mode if this is not set.
              */
-            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+            //audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
             audioManager.setSpeakerphoneOn(!audioManager.isWiredHeadsetOn());
             getContext().registerReceiver(myNoisyAudioStreamReceiver, intentFilter);
         } else {
@@ -310,7 +311,16 @@ public class CustomTwilioVideoView extends View implements LifecycleEventListene
             getContext().unregisterReceiver(myNoisyAudioStreamReceiver);
         }
     }
-
+    public void setEnterCommunication(boolean isEnter){
+        if(isEnter && !isInCommunicationMode){
+            isInCommunicationMode = true;
+            previousAudioMode = audioManager.getMode();
+            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        }else if(isInCommunicationMode){
+            isInCommunicationMode = false;
+            audioManager.setMode(previousAudioMode);
+        }
+    }
     private class BecomingNoisyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

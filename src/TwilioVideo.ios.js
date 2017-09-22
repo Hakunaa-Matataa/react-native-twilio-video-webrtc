@@ -168,7 +168,12 @@ export default class extends Component {
   disconnect () {
     TWVideoModule.disconnect()
   }
-
+  
+  setEnterCommunication(isEnter){
+    console.warn("setEnterCommunication is not implement in iOS yet.");
+    //NativeCustomTwilioVideoView.setEnterCommunication(isEnter);
+  }
+  
   _startLocalVideo () {
     const screenShare = this.props.screenShare || false
     TWVideoModule.startLocalVideo(screenShare)
